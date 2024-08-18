@@ -112,20 +112,13 @@ This is a simple event management system built using Node.js with Sequelize ORM 
     {
       "name": "Updated Event Name",
       "date": "2024-08-01",
-      "time": "15:00:00",
+      "time": "15:00",
       "description": "Updated Description"
     }
     ```
 
 - **Delete Event**
   - **Endpoint**: `DELETE /events/:id`
-  - **Headers**:
-    ```
-    Authorization: Bearer <token>
-    ```
-
-- **Get Events**
-  - **Endpoint**: `GET /events`
   - **Headers**:
     ```
     Authorization: Bearer <token>
@@ -144,7 +137,7 @@ This is a simple event management system built using Node.js with Sequelize ORM 
 
   - **Response**: A confirmation email will be sent to the user upon successful registration.
 
-- **Get User Registrations**
+- **Get Registrations**
   - **Endpoint**: `GET /events/`
   - **Headers**:
     ```
