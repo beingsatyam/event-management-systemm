@@ -18,8 +18,8 @@ This is a simple event management system built using Node.js with Sequelize ORM 
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-username/event-management-system.git
-   cd event-management-system
+   git clone https://github.com/beingsatyam/event-management-systemm.git
+   cd event-management-systemm
 
 2. **Install Dependencies**
 
