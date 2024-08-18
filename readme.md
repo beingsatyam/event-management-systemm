@@ -10,6 +10,7 @@ This is a simple event management system built using Node.js with Sequelize ORM 
 - **Event Management**: Admin users can create, update, and delete events.
 - **Event Registration**: Regular users can register for events, and a notification email is sent to them upon successful registration.
 - **Authentication**: Users authenticate using email and password with token-based sessions.
+- **Email Notification**: An email is sent upon successful registration, event update, and event deletion.
 
 
 ## Installation
@@ -59,9 +60,10 @@ This is a simple event management system built using Node.js with Sequelize ORM 
       "name" : "test",
       "email": "user@example.com",
       "password": "password123",
-      "role": "admin" / "user" 
+      "role": "admin" 
     }
     ```
+    possible values for role: 'admin' , 'user'
 
 - **Login User**
   - **Endpoint**: `POST /users/login`

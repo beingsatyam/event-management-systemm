@@ -1,11 +1,15 @@
 const jwt = require("jsonwebtoken");
+const moment = require('moment');
 // const USERS = require("../db/users.db");
 
-const User = require('../models/users.model'); 
+const User = require('../models/users.model');
 
 
 
 async function uniqueUserCheck(req, res, next) {
+
+  //checks if email already exists
+
   const { email } = req.body;
   console.log(email);
 
@@ -13,7 +17,7 @@ async function uniqueUserCheck(req, res, next) {
 
   if (user) {
     res.status(422).json(
-      { message: 'username already exists!' })
+      { message: 'email already exists!' })
   }
 
   else {
@@ -25,21 +29,31 @@ async function uniqueUserCheck(req, res, next) {
 
 function validateRegistrationInput(req, res, next) {
 
-  const mandatoryFields = ['name' , 'email', 'password' ]
+  const mandatoryFields = ['name', 'email', 'password']
 
   const missingFields = []
 
-  for(field of mandatoryFields){
-    if (!req.body[field]){
+  for (field of mandatoryFields) {
+    if (!req.body[field]) {
 
       missingFields.push(field);
 
     }
   };
 
-  if (missingFields.length > 0){
-    res.status(400).json(
-      { message:  `one or more manadatory fields are missing : ${missingFields.join(',')}` })
+
+  if (missingFields.length > 0) {
+    return res.status(400).json(
+      { message: `one or more manadatory fields are missing : ${missingFields.join(',')}` })
+  }
+
+  const allowedRoles = ['user', 'admin'];
+  
+  const isRoleValid = !(req.body['role'] && !allowedRoles.includes(req.body['role']))
+
+  if (!isRoleValid) {
+    return res.status(400).json(
+      { message: "Invalid role. Allowed roles are 'user' and 'admin'."  })
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -49,8 +63,8 @@ function validateRegistrationInput(req, res, next) {
     next();
   } else {
     res.status(400).json(
-      { message:  `Invalid email address!` })
-  
+      { message: `Invalid email address!` })
+
   };
 
 
@@ -58,8 +72,8 @@ function validateRegistrationInput(req, res, next) {
 
 
 async function validateUser(req, res, next) {
-  const JWT_SECRET = process.env.JWT_SECRET;
 
+  const JWT_SECRET = process.env.JWT_SECRET;
   const auth = req.headers.authorization;
 
   if (!auth) {
@@ -73,71 +87,72 @@ async function validateUser(req, res, next) {
 
   if (!token) {
     return res.status(401).json({ error: 'No token provided' });
-}
+  }
 
-try {
+  try {
 
     const decoded = jwt.verify(token, JWT_SECRET);
-
     console.log(decoded);
+
     const user = await User.findByPk(decoded.user_id);
 
     if (!user) {
-        return res.status(401).json({ error: 'Invalid token' });
+      return res.status(401).json({ error: 'Invalid token' });
     }
 
- 
     req.user = user;
+
     next();
-} catch (error) {
+
+  } catch (error) {
     console.error('Error verifying token:', error);
     return res.status(500).json({ error: 'Failed to authenticate token' });
-}
+  }
 };
 
-function adminCheck(req , res, next) {
+function adminCheck(req, res, next) {
 
   if (req.user.role !== 'admin') {
-      return res.status(403).json({ error: 'Access denied: Admins only' });
+    return res.status(403).json({ error: 'Access denied: Admins only' });
   }
   next();
+
 };
 
-const moment = require('moment');
 
-function validateEventInput(req,res,next) {
+function validateEventInput(req, res, next) {
 
-    const mandatoryFields = ['name' , 'date', 'time' , 'description']
+  const mandatoryFields = ['name', 'date', 'time', 'description']
 
-    const missingFields = []
-  
-    for(field of mandatoryFields){
-      if (!req.body[field]){
-  
-        missingFields.push(field);
-  
-      }
-    };
-  
-    if (missingFields.length > 0){
-      res.status(400).json(
-        { message:  `one or more manadatory fields are missing : ${missingFields.join(',')}` })
+  const missingFields = []
+
+  for (field of mandatoryFields) {
+    if (!req.body[field]) {
+
+      missingFields.push(field);
+
     }
+  };
+
+  if (missingFields.length > 0) {
+    return res.status(400).json(
+      { message: `one or more manadatory fields are missing : ${missingFields.join(',')}` })
+  }
 
 
-    if (!moment(req.body['date'], 'YYYY-MM-DD', true).isValid()) {
-      res.status(400).json({ message: "Invalid date format. Expected format is YYYY-MM-DD." })
-    }
+  if (!moment(req.body['date'], 'YYYY-MM-DD', true).isValid()) {
+    return res.status(400).json({ message: "Invalid date format. Expected format is YYYY-MM-DD." })
+  }
 
-    if (!moment(req.body['time'], 'HH:mm', true).isValid()) {
-      res.status(400).json({ message:  "Invalid time format. Expected format is HH:mm."  })
-       
-    }
+  if (!moment(req.body['time'], 'HH:mm', true).isValid()) {
+    return res.status(400).json({ message: "Invalid time format. Expected format is HH:mm." })
 
-    next();
+  }
+
+  next();
 
 
 }
 
 
-module.exports = { validateUser,uniqueUserCheck,validateRegistrationInput , adminCheck , validateEventInput };
+module.exports = { validateUser, uniqueUserCheck, validateRegistrationInput, adminCheck, validateEventInput };

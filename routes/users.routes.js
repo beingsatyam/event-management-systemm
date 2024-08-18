@@ -9,7 +9,7 @@ router.post("/register",validateRegistrationInput, uniqueUserCheck, createUser);
 
 router.post("/login", loginUser);
 
-router.get("/" , adminCheck , getUsers);
+router.get("/" , validateUser , adminCheck , getUsers);
 
 
 module.exports = router;

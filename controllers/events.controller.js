@@ -84,7 +84,8 @@ async function updateEvent(req, res) {
 
         }
 
-        res.status(200).json({ message: 'Event updated successfully', event });
+        res.status(200).json({ message: 'Event updated successfully' });
+    
     } catch (error) {
         res.status(500).json({ error });
     }
@@ -125,7 +126,7 @@ async function deleteEvent(req, res) {
 
         res.status(200).json({ message: 'Event deleted successfully' });
     } catch (error) {
-        console.error('Error deleting event:', error);
+
         res.status(500).json({ error: 'Internal server error', error });
     }
 };
@@ -176,7 +177,7 @@ async function registerEvent(req, res) {
 
         emailService.sendEmail(email, 'Event Registration!', registrationEmail)
 
-        res.status(201).json({ message: 'Successfully registered for the event', registration });
+        res.status(201).json({ message: 'Successfully registered for the event' });
 
     } catch (error) {
         console.error('Error registering for event:', error);

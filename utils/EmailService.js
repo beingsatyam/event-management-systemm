@@ -25,7 +25,7 @@ class EmailService {
             return info;
         } catch (error) {
             console.error('Error occurred:', error.message);
-            throw error;
+       
         }
     }
 }
