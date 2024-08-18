@@ -29,8 +29,10 @@ This is a simple event management system built using Node.js with Sequelize ORM 
     Add your Email and password in the .env file.
 
    ```bash
+   EMAIL=EMAIL_ADDRESS
+   PASSWORD=PASSWORD
     
-    you need to do the following to get the password:
+    Do the following to get the password:
 
     1.Go to your Google account at https://myaccount.google.com/
     2.Go to Security
