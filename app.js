@@ -17,9 +17,8 @@ app.use('/users' ,userRoute );
 app.use('/events' ,eventRoute );
 
 
-const { User, Event, Registration } = require('./models/associations');
 
-sequelize.sync({alter : true}).then(() => {
+sequelize.sync().then(() => {
     console.log('Database & tables created!');
 });
 

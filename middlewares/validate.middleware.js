@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 // const USERS = require("../db/users.db");
 
-const { User } = require('../models/associations'); 
+const User = require('../models/users.model'); 
 
 
 
@@ -20,6 +20,8 @@ async function uniqueUserCheck(req, res, next) {
     next();
   };
 };
+
+
 
 function validateRegistrationInput(req, res, next) {
 
@@ -93,12 +95,49 @@ try {
 }
 };
 
-function requireAdmin(req , res, next) {
-  // Checking if the user has the admin role
+function adminCheck(req , res, next) {
+
   if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'Access denied: Admins only' });
   }
   next();
 };
 
-module.exports = { validateUser,uniqueUserCheck,validateRegistrationInput , requireAdmin };
+const moment = require('moment');
+
+function validateEventInput(req,res,next) {
+
+    const mandatoryFields = ['name' , 'date', 'time' , 'description']
+
+    const missingFields = []
+  
+    for(field of mandatoryFields){
+      if (!req.body[field]){
+  
+        missingFields.push(field);
+  
+      }
+    };
+  
+    if (missingFields.length > 0){
+      res.status(400).json(
+        { message:  `one or more manadatory fields are missing : ${missingFields.join(',')}` })
+    }
+
+
+    if (!moment(req.body['date'], 'YYYY-MM-DD', true).isValid()) {
+      res.status(400).json({ message: "Invalid date format. Expected format is YYYY-MM-DD." })
+    }
+
+    if (!moment(req.body['time'], 'HH:mm', true).isValid()) {
+      res.status(400).json({ message:  "Invalid time format. Expected format is HH:mm."  })
+       
+    }
+
+    next();
+
+
+}
+
+
+module.exports = { validateUser,uniqueUserCheck,validateRegistrationInput , adminCheck , validateEventInput };

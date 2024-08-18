@@ -8,6 +8,11 @@ const Event = sequelize.define('Event', {
         autoIncrement: true,
         primaryKey: true
     },
+    event_name:{
+        type: DataTypes.TEXT,
+        allowNull: false
+
+    },
     event_description: {
         type: DataTypes.TEXT,
         allowNull: false
@@ -22,10 +27,10 @@ const Event = sequelize.define('Event', {
     },
     created_by: {
         type: DataTypes.INTEGER,
-        // references: {
-        //     model: User,
-        //     key: 'user_id'
-        // },
+        references: {
+            model: User,
+            key: 'user_id'
+        },
         allowNull: false
     }
 }, {
