@@ -32,8 +32,8 @@ class EmailService {
 
 const emailService = new EmailService({
     service: 'gmail',
-    user: 'stym.dev.test@gmail.com',
-    pass: 'wguw pmrn gorm nzdo'
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD
 });
 
 

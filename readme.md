@@ -26,9 +26,18 @@ This is a simple event management system built using Node.js with Sequelize ORM 
    npm install
 
 3. **Set Up Environment Variables**
+    Add your Email and password in the .env file.
 
    ```bash
-   npm install
+    
+    you need to do the following to get the password:
+
+    1.Go to your Google account at https://myaccount.google.com/
+    2.Go to Security
+    3.Choose 2-Step Verification - here you have to verify yourself, in my case it was with phone number and a confirmation code send as text message. After that you will be able to enabled 2-Step Verification
+    4.Visit https://myaccount.google.com/apppasswords to create your app.
+    5.Put a name e.g. nodemailer to your app and create it.
+    6.A modal dialog will appear with the password. Get that password and use it in your code
 
 3. **Run the Application**
 
